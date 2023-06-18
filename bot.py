@@ -2,15 +2,18 @@ import time
 import logging
 
 from aiogram import Bot, Dispatcher, executor, types
+from dotenv import load_dotenv
+import os
 
 
-TOKEN = "5644271031:AAEA7_oTRVmlsBW-fIh2l8JPec21GQ6Y8Rk"
+load_dotenv()
+bot = Bot(os.getenv('TOKEN'))
+dp = Dispatcher(bot=bot)
+
+
 MSG = "Поиграл ли ты сегодня в жабку, {}?"
 CODE_WORDS = ['Моя жаба', 'Завершить работу', 'Отправить жабу на работу', '@toadbot Поход в столовую',
               '@toadbot Работа крупье', '@toadbot Работа грабитель']
-
-bot = Bot(token=TOKEN)
-dp = Dispatcher(bot=bot)
 
 
 @dp.message_handler(commands=['start'])
