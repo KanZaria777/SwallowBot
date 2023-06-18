@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 
 
-TOKEN = "5644271031:AAEA7_oTRVmlsBW-fIh2l8JPec21GQ6Y8Rk"
+TOKEN = ""
 MSG = "Поиграл ли ты сегодня в жабку, {}?"
 CODE_WORDS = ['Моя жаба', 'Завершить работу', 'Отправить жабу на работу', '@toadbot Поход в столовую',
               '@toadbot Работа крупье', '@toadbot Работа грабитель']
