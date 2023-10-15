@@ -2,6 +2,7 @@ import time
 import logging
 
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import ReplyKeyboardMarkup
 from dotenv import load_dotenv
 import os
 
@@ -11,7 +12,16 @@ bot = Bot(os.getenv('TOKEN'))
 dp = Dispatcher(bot=bot)
 
 
-MSG = "Поиграл ли ты сегодня в жабку, {}?"
+main = ReplyKeyboardMarkup(resize_keyboard=True)
+# main.add('Толик').add('Андрей').add('Костян')
+main.add('Толик', 'Андрей', 'Костян')
+
+main_admin = ReplyKeyboardMarkup(resize_keyboard=True)
+main_admin.add('Толик', 'Андрей', 'Костян', 'Админка')
+
+admin_panel = ReplyKeyboardMarkup(resize_keyboard=True)
+admin_panel.add('Статистика')
+
 CODE_WORDS = ['Моя жаба', 'Завершить работу', 'Отправить жабу на работу', '@toadbot Поход в столовую',
               '@toadbot Работа крупье', '@toadbot Работа грабитель']
 
@@ -22,13 +32,37 @@ async def start_handler(message: types.Message):
     user_name = message.from_user.first_name
     user_full_name = message.from_user.full_name
     logging.info(f'{user_id=} {user_full_name=} {time.asctime()}')
-    await message.reply(f"Привет, {user_full_name}!")
+    if user_id == int(os.getenv('ADMIN_ID')):
+        await message.answer_sticker("CAACAgIAAxkBAAPuZRW6RHoFFnEUo0Bw5pfOYTOwuQEAAjUSAAJW1glIVcIkKqo_6n4wBA")
+        await message.answer(f'Приветствую', reply_markup=main_admin)
+    else:
+        await message.answer_sticker("CAACAgIAAxkBAAPuZRW6RHoFFnEUo0Bw5pfOYTOwuQEAAjUSAAJW1glIVcIkKqo_6n4wBA")
+        await message.answer(f'Привет {user_name}', reply_markup=main)
 
-    for i in range(1):
-        time.sleep(86400)
 
-        await bot.send_message(user_id, MSG.format(user_name))
+@dp.message_handler(text='Админка')
+async def check_admin(message: types.Message):
+    if message.from_user.id == int(os.getenv('ADMIN_ID')):
+        await message.reply(f'Принято {message.from_user.first_name}!', reply_markup=admin_panel)
+        '''
+        если мы назовем функцию main_admin or admin_panel мы в первом случае лишимся стартовой панели админа(провалимся глубже
+        во втором получить ошибку с вызовом JSON файла, так как передает в клавиатуры функцию, вместо клавиатуры
+        '''
 
+
+@dp.message_handler(text='Толик')
+async def Tolik(message: types.Message):
+    await message.answer_sticker('CAACAgIAAx0CbiIutgACEQJlHbgOrwMYVpVAti6mgNHCS4jeGwACPBgAAuBwGUitbvj9Z4vJWDAE')
+
+
+@dp.message_handler(text='Андрей')
+async def Andrey(message: types.Message):
+    await message.answer_sticker('CAACAgIAAx0CbiIutgACEQRlHbgb7UqdgEZA3-8rTFu7dVfDzwACaBkAAuy6AAFIUpaMcAAB5dCmMAQ')
+
+
+@dp.message_handler(text='Костян')
+async def Kostyan(message: types.Message):
+    await message.answer_sticker('CAACAgIAAx0CbiIutgACEQZlHbgj1ogQ2ETsc3aMsze4XH9EDQACRhcAAtPlAUi8Q4Yiot-rCjAE')
 
 
 @dp.message_handler(commands=['my_toad'])
