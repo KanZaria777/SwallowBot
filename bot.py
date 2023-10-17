@@ -2,7 +2,7 @@ import time
 import logging
 
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardMarkup
+from aiogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 from dotenv import load_dotenv
 import os
 
@@ -21,6 +21,9 @@ main_admin.add('Толик', 'Андрей', 'Костян', 'Админка')
 
 admin_panel = ReplyKeyboardMarkup(resize_keyboard=True)
 admin_panel.add('Статистика')
+
+social_links = InlineKeyboardMarkup(row_widht=2)
+social_links.add(InlineKeyboardMarkup(text='YouTube', url='https://www.youtube.com/@user-zo2vx8mi8r'))
 
 CODE_WORDS = ['Моя жаба', 'Завершить работу', 'Отправить жабу на работу', '@toadbot Поход в столовую',
               '@toadbot Работа крупье', '@toadbot Работа грабитель']
@@ -62,7 +65,8 @@ async def Andrey(message: types.Message):
 
 @dp.message_handler(text='Костян')
 async def Kostyan(message: types.Message):
-    await message.answer_sticker('CAACAgIAAx0CbiIutgACEQZlHbgj1ogQ2ETsc3aMsze4XH9EDQACRhcAAtPlAUi8Q4Yiot-rCjAE')
+    await message.answer_sticker('CAACAgIAAx0CbiIutgACEQZlHbgj1ogQ2ETsc3aMsze4XH9EDQACRhcAAtPlAUi8Q4Yiot-rCjAE',
+                                 reply_markup=social_links)
 
 
 @dp.message_handler(commands=['my_toad'])
